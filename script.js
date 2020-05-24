@@ -31,9 +31,15 @@ console.log("#============================================");
 // ===============================================================
 class User {
   constructor(obj) {
-    (this.name = obj.name),
-      (this.age = obj.age),
-      (this.followers = obj.followers);
+    this.name = obj.name;
+    this.age = obj.age;
+    this.followers = obj.followers;
+  }
+  getInfo() {
+    console.log(
+      "#2 :",
+      `User ${this.name} is ${this.age} years old and has ${this.followers} followers`
+    );
   }
 }
 
@@ -44,12 +50,6 @@ const mango2 = new User({
 });
 
 console.log("#2 :", mango2);
-User.prototype.getInfo = function () {
-  console.log(
-    "#2 :",
-    `User ${this.name} is ${this.age} years old and has ${this.followers} followers`
-  );
-};
 
 mango2.getInfo(); // User Mango is 2 years old and has 20 followers
 
@@ -72,6 +72,16 @@ class Storage {
   constructor(arr) {
     this.items = arr;
   }
+
+  getItems() {
+    return this.items;
+  }
+  addItem(item) {
+    this.items.push(item);
+  }
+  removeItem(itemName) {
+    this.items = this.items.filter((item) => item !== itemName);
+  }
 }
 
 const storage = new Storage([
@@ -80,29 +90,15 @@ const storage = new Storage([
   "Железные жупи",
   "Антигравитатор",
 ]);
-console.log("#3 :", storage);
 
-Storage.prototype.getItems = function () {
-  console.log("#3 :", this.items);
-};
-storage.getItems();
-
-// const items = storage.getItems();
-// console.table(items); // [ "Нанитоиды", "Пролонгер", "Железные жупи", "Антигравитатор" ]
-
-Storage.prototype.addItem = function (item) {
-  this.items.push(item);
-};
+const items = storage.getItems();
+console.table(items); // [ "Нанитоиды", "Пролонгер", "Железные жупи", "Антигравитатор" ]
 
 storage.addItem("Дроид");
-console.table("#3 :", storage.items); // [ "Нанитоиды", "Пролонгер", "Железные жупи", "Антигравитатор", "Дроид" ]
-
-Storage.prototype.removeItem = function (itemName) {
-  this.items = this.items.filter((item) => item !== itemName);
-};
+console.table(storage.items); // [ "Нанитоиды", "Пролонгер", "Железные жупи", "Антигравитатор", "Дроид" ]
 
 storage.removeItem("Пролонгер");
-console.table("#3 :", storage.items); // [ "Нанитоиды", "Железные жупи", "Антигравитатор", "Дроид" ]
+console.table(storage.items); // [ "Нанитоиды", "Железные жупи", "Антигравитатор", "Дроид" ]
 console.log("#============================================");
 
 // ===============================================================
@@ -119,15 +115,12 @@ class StringBuilder {
   }
   append(str) {
     this._value = this._value.concat(str);
-    return this._value.concat(str);
   }
   prepend(str) {
     this._value = str.concat(this._value);
-    return this._value;
   }
   pad(str) {
     this._value = str.concat(this._value).concat(str);
-    return this._value;
   }
 }
 
@@ -158,11 +151,11 @@ class Car {
     );
   }
   constructor(object) {
-    (this.maxSpeed = object.maxSpeed),
-      object.speed ? (this.speed = object.speed) : (this.speed = 0),
-      (this.isOn = false),
-      object.distance ? (this.distance = object.distance) : (this.distance = 0),
-      (this._price = object.price);
+    this.maxSpeed = object.maxSpeed;
+    this.speed = 0;
+    this.isOn = false;
+    this.distance = 0;
+    this._price = object.price;
   }
 
   get price() {
@@ -173,34 +166,32 @@ class Car {
     this._price = value;
   }
   turnOn() {
-    return (this.isOn = true);
+    this.isOn = true;
   }
   turnOff() {
-    return (this.isOn = false), (this.speed = 0);
+    this.isOn = false;
   }
   decelerate(value) {
-    if (this.speed - value > 0) return (this.speed = this.speed - value);
+    if (this.speed - value >= 0) {
+      this.speed = this.speed - value;
+    }
   }
   accelerate(value) {
-    if (this.maxSpeed > this.speed + value)
-      return (this.speed = this.speed + value);
+    if (this.maxSpeed >= this.speed + value) this.speed = this.speed + value;
   }
   drive(hours) {
-    if (this.isOn) return (this.distance = this.distance + this.speed * hours);
+    if (this.isOn) {
+      this.distance = this.distance + this.speed * hours;
+    }
   }
 }
 const mustang = new Car({ maxSpeed: 200, price: 2000 });
 
 Car.getSpecs(mustang);
-console.log("#5 :", mustang.turnOn(), mustang.accelerate(50), mustang.drive(2));
+mustang.turnOn(), mustang.accelerate(50), mustang.drive(2);
 Car.getSpecs(mustang);
-console.log(
-  "#5 :",
-  mustang.decelerate(20),
-  mustang.drive(1),
-  mustang.turnOff()
-);
+mustang.decelerate(20), mustang.drive(1), mustang.turnOff();
 Car.getSpecs(mustang);
 console.log("#5 : Price=", mustang.price); // 2000
 mustang.price = 4000;
-console.log("#5 :", mustang.price); // 4000
+console.log("#5 : Price=", mustang.price); // 4000
